@@ -62,5 +62,5 @@ renren:
   database: oracle
 
 dataSource:
-  path: D:\\datafile\\dataSource.json
+  path: d:\\datafile\\dataSource.json
 
