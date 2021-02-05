@@ -8,6 +8,7 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
@@ -31,11 +32,23 @@ public class DataSourceInit implements CommandLineRunner {
     @Autowired
     DynamicRoutingDataSource dynamicRoutingDataSource;
 
+    /**
+     * 配置dataSource配置文件的服务器路径
+     */
+    @Value("${dataSource.path}")
+    String path;
+
     @Override
     public void run(String... args) throws Exception {
-       String str = FileUtils.readFileToString(
-                new File(new UrlResource(ResourceUtils.getURL("classpath:dataSource.json")).
-                        getURI().getPath()), "UTF-8");
+        File file = new File(path);
+        if(file.isDirectory()){
+            throw new Exception("dataSource配置文件路径是一个文件夹，请检查配置！");
+        }
+        if(!file.exists()){
+            file.createNewFile();
+        }
+        String str = FileUtils.readFileToString(
+                file, "UTF-8");
         List<Map> maps  = (List) JSONArray.parseArray(str);
         maps.forEach(map -> {
             try {

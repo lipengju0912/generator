@@ -20,6 +20,7 @@ import io.renren.utils.R;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
@@ -51,6 +52,12 @@ public class SysGeneratorController {
 
 	@Autowired
 	DynamicRoutingDataSource dynamicRoutingDataSource;
+
+	/**
+	 * 配置dataSource配置文件的服务器路径
+	 */
+	@Value("${dataSource.path}")
+	String path;
 	/**
 	 * 列表
 	 */
@@ -86,8 +93,7 @@ public class SysGeneratorController {
 	@ResponseBody
 	public R findDataSource() throws Exception {
 		String str = FileUtils.readFileToString(
-				new File(new UrlResource(ResourceUtils.getURL("classpath:dataSource.json")).
-						getURI().getPath()), "UTF-8");
+				new File(path), "UTF-8");
 		List<Map> maps  = (List) JSONArray.parseArray(str);
 		return R.ok().put("data", maps);
 	}
@@ -102,8 +108,7 @@ public class SysGeneratorController {
 			return R.error("key值为空，无法删除数据源！");
 		}
 		dynamicRoutingDataSource.removeDataSource(key);
-		File file = new File(new UrlResource(ResourceUtils.getURL("classpath:dataSource.json")).
-				getURI().getPath());
+		File file = new File(path);
 		String str = FileUtils.readFileToString(file, "UTF-8");
 		List<Map> maps  = (List) JSONArray.parseArray(str);
 		maps.removeIf(map -> key.equals(map.get("key")));
@@ -149,8 +154,7 @@ public class SysGeneratorController {
 		}
 
 		// 添加文件
-		File file = new File(new UrlResource(ResourceUtils.getURL("classpath:dataSource.json")).
-				getURI().getPath());
+		File file = new File(path);
 		String str = FileUtils.readFileToString(file, "UTF-8");
 		List<Map> maps  = (List) JSONArray.parseArray(str);
 		for (Map map : maps) {

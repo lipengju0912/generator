@@ -61,3 +61,6 @@ pagehelper:
 renren:
   database: oracle
 
+dataSource:
+  path: D:\\datafile\\dataSource.json
+
