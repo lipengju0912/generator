@@ -1,0 +1,32 @@
+package ${package}.${moduleName}.vo;
+
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+import java.io.Serializable;
+import java.util.Date;
+import ${mainPath}.plat.common.model.PageParams;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @since ${datetime}
+ */
+@ApiModel(value = "${comments}查询参数", description="${comments}查询参数")
+@Data
+public class ${className}Vo extends PageParams implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+    @ApiModelProperty(value = "查询关键字")
+    private String keyWord;
+#foreach ($column in $columns)
+
+    @ApiModelProperty(value = "${column.comments}")
+    private $column.attrType $column.attrname;
+#end
+
+}

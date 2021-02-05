@@ -1,0 +1,44 @@
+package ${package}.${moduleName}.dto.excel;
+
+import cn.afterturn.easypoi.excel.annotation.Excel;
+import io.swagger.annotations.ApiModel;
+import lombok.Data;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @since ${datetime}
+ *
+ * 支持注解正则校验，exemple:
+ * 字符串非空： @NotEmpty
+ * 数字非空： @NotNull
+ * 手机号：@Pattern(regexp = "^[1][3,4,5,7,8][0-9]{9}$", message = "联系电话格式有误")
+ * 非数字：@Pattern(regexp = "^[0-9]+\\.{0,1}[0-9]{0,2}$", message = "不是数字")
+ * 经度： @Pattern(regexp = "^-?((0|1?[0-7]?[0-9]?)(([.][0-9]{1,9})?)|180(([.][0]{1,9})?))$", message = "经度范围： -180.000000000～+180.000000000")
+ * 纬度：@Pattern(regexp = "^-?((0|[1-8]?[0-9]?)(([.][0-9]{1,9})?)|90(([.][0]{1,9})?))$", message = "纬度范围：-90.000000000~90.000000000")
+ *
+ * 可以定义枚举字段类型，导入后自动转换成枚举，enumImportMethod必须配置，栗子：
+ *     @NotNull
+ *     @Excel(name = "", orderNum = "", enumImportMethod = "getName")
+ *     private Enum enum;
+ *
+ */
+@ApiModel(value = "${comments}excel导入对象", description="${comments}excel导入对象")
+@Data
+public class ${className}ImportDto implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+    #set($loop = 1)
+#foreach ($column in $columns)
+
+    @Excel(name = "${column.comments}", orderNum = "$loop")
+    private String $column.attrname;
+    #set($loop = $loop + 1)
+#end
+
+}

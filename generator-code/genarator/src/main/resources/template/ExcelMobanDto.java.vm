@@ -1,0 +1,31 @@
+package ${package}.${moduleName}.dto.excel;
+
+import cn.afterturn.easypoi.excel.annotation.Excel;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
+import lombok.Data;
+
+import java.io.Serializable;
+
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @since ${datetime}
+ */
+@ApiModel(value = "${comments}导出模板", description="${comments}导出模板")
+@Data
+@Builder
+public class ${className}ExcelMobanDto implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+    #set($loop = 1)
+#foreach ($column in $columns)
+
+    @Excel(name = "${column.comments}", orderNum = "$loop", width = 25)
+    private String $column.attrname;
+    #set($loop = $loop + 1)
+#end
+
+}

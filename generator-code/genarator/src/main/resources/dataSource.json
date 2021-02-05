@@ -1,0 +1,30 @@
+[
+    {
+        "key":"湖南",
+        "driverClassName":"oracle.jdbc.OracleDriver",
+        "url":"jdbc:oracle:thin:@10.1.207.211:1521:orcl",
+        "username":"gumdbhn",
+        "password":"jk_hn"
+    },
+    {
+        "key":"贵州",
+        "driverClassName":"oracle.jdbc.OracleDriver",
+        "url":"jdbc:oracle:thin:@10.1.207.211:1521:orcl",
+        "username":"gumdbgz",
+        "password":"jk_gz"
+    },
+    {
+        "key":"河北",
+        "driverClassName":"oracle.jdbc.OracleDriver",
+        "url":"jdbc:oracle:thin:@10.1.207.211:1521:orcl",
+        "username":"gumdbhb",
+        "password":"jk_hb"
+    },
+    {
+        "key":"浙江",
+        "driverClassName":"oracle.jdbc.OracleDriver",
+        "url":"jdbc:oracle:thin:@10.1.207.211:1521:orcl",
+        "username":"gumdbzj",
+        "password":"jk_zj"
+    }
+]

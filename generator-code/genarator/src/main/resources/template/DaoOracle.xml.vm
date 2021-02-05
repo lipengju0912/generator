@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="${package}.${moduleName}.dao.${className}Dao">
+    #set($sum = 0)#foreach($column in $columns)
+    #if(${column.attrname} != "id" && ${column.attrname} != "revision" && ${column.attrname} != "createdBy" && ${column.attrname} != "createdTime" && ${column.attrname} != "updatedBy" && ${column.attrname} != "updatedTime" )
+        #set($sum = $sum + 1)
+    #end
+#end
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="${package}.${moduleName}.entity.${className}Entity" id="${classname}Map">
+        #foreach($column in $columns)
+            <result property="${column.attrname}" column="${column.columnName}"/>
+        #end
+    </resultMap>
+
+    <insert id="insertByGeneratedKey" parameterType="${package}.${moduleName}.entity.${className}Entity"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        insert into ${tableName}(
+        #set($loop1 = 1)
+        #foreach($column in $columns)
+        #if(${column.attrname} != "id" && ${column.attrname} != "revision" && ${column.attrname} != "createdBy" && ${column.attrname} != "createdTime" && ${column.attrname} != "updatedBy" && ${column.attrname} != "updatedTime" )
+        #if($loop1 < $sum)
+   ${column.columnName},
+            #else
+   ${column.columnName}
+            #end
+            #set($loop1 = $loop1 + 1)
+        #end
+#end) values (
+           #set($loop2 = 1)
+          #foreach($column in $columns)
+        #if(${column.attrname} != "id" && ${column.attrname} != "revision" && ${column.attrname} != "createdBy" && ${column.attrname} != "createdTime" && ${column.attrname} != "updatedBy" && ${column.attrname} != "updatedTime" )
+        #if($loop2 < $sum)
+    #{${column.attrname}},
+            #else
+    #{${column.attrname}}
+            #end
+            #set($loop2 = $loop2 + 1)
+        #end
+#end)
+    </insert>
+
+    <insert id="insertBatchByGeneratedKey" parameterType="map">
+        insert into ${tableName}(
+        #set($loop1 = 1)
+        #foreach($column in $columns)
+            #if(${column.attrname} != "id" && ${column.attrname} != "revision" && ${column.attrname} != "createdBy" && ${column.attrname} != "createdTime" && ${column.attrname} != "updatedBy" && ${column.attrname} != "updatedTime" )
+                #if($loop1 < $sum)
+                    ${column.columnName},
+                #else
+                    ${column.columnName}
+                #end
+                #set($loop1 = $loop1 + 1)
+            #end
+        #end)
+
+        select
+
+        #set($loop2 = 1)
+        #foreach($column in $columns)
+            #if(${column.attrname} != "id" && ${column.attrname} != "revision" && ${column.attrname} != "createdBy" && ${column.attrname} != "createdTime" && ${column.attrname} != "updatedBy" && ${column.attrname} != "updatedTime" )
+                #if($loop2 < $sum)
+                    ${column.columnName},
+                #else
+                    ${column.columnName}
+                #end
+                #set($loop2 = $loop2 + 1)
+            #end
+        #end
+
+        from (
+        <foreach collection="list" item="item" index="index" separator="union">
+            select
+            #set($loop3 = 1)
+            #foreach($column in $columns)
+                #if(${column.attrname} != "id" && ${column.attrname} != "revision" && ${column.attrname} != "createdBy" && ${column.attrname} != "createdTime" && ${column.attrname} != "updatedBy" && ${column.attrname} != "updatedTime" )
+                    #if($loop3 < $sum)
+                        #{item.${column.attrname}}  ${column.columnName},
+                    #else
+                        #{item.${column.attrname}}  ${column.columnName}
+                    #end
+                    #set($loop3 = $loop3 + 1)
+                #end
+            #end
+            from dual
+        </foreach>
+        )
+
+    </insert>
+
+    <sql id="selectRichSql">
+        select
+          #foreach($column in $columns)
+        #if(${velocityCount} < $columns.size())
+   t1.${column.columnName},
+            #else
+   t1.${column.columnName}
+            #end
+        #end
+        from ${tableName} t1
+    </sql>
+
+    <select id="findList" resultType="${package}.${moduleName}.dto.${className}Dto">
+        <include refid="selectRichSql"></include>
+        <where>
+             1=1
+            <if test="param.keyWord != null and param.keyWord != ''">
+                <!-- 多个字段模糊匹配
+                栗子：and    ( t1.xxx like concat(concat('%', #{param.keyWord}), '%') or    t1.xxx like concat(concat('%', #{param.keyWord}), '%'))
+                -->
+
+            </if>
+        </where>
+    </select>
+
+    <select id="findById" resultType="${package}.${moduleName}.dto.${className}Dto" parameterType="map">
+        <include refid="selectRichSql"></include>
+        <where>
+            t1.${pk.columnName} = #{${pk.attrname}}
+        </where>
+    </select>
+</mapper>
