@@ -26,12 +26,6 @@
             <artifactId>genarator</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.lipj</groupId>
-            <artifactId>data</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
     <build>
