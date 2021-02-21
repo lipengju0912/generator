@@ -3,6 +3,7 @@ server:
   ip: 127.0.0.1
 
 
+
 spring:
   datasource:
     dynamic:
@@ -14,6 +15,8 @@ spring:
           url: jdbc:oracle:thin:@10.1.207.211:1521:orcl
           username: gumdbzj
           password: jk_zj
+      druid:
+        filters: stat
     #oracle配置
     #    driverClassName: oracle.jdbc.OracleDriver
     #    url: jdbc:oracle:thin:@47.100.206.162:1521:xe
